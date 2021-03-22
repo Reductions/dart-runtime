@@ -7,24 +7,27 @@ import 'package:runtime/runtime.dart';
 import 'build_context.dart';
 
 class BuildExecutable extends Executable<Null> {
-  BuildExecutable(Map<String, dynamic> message) : super(message) {
+  BuildExecutable(Map<String, dynamic> message, {this.isFlutter})
+      : super(message) {
     context = BuildContext.fromMap(message);
   }
 
   late BuildContext context;
+  bool? isFlutter;
 
   @override
   Future<Null> execute() async {
     final build = Build(context);
-    await build.execute();
+    await build.execute(isFlutter: isFlutter);
   }
 }
 
 class BuildManager {
   /// Creates a new build manager to compile a non-mirrored build.
-  BuildManager(this.context);
+  BuildManager(this.context, {this.isFlutter});
 
   final BuildContext context;
+  final bool? isFlutter;
 
   Uri get sourceDirectoryUri => context.sourceApplicationDirectory.uri;
 
@@ -54,7 +57,8 @@ class BuildManager {
 
     strippedScriptFile.writeAsStringSync(scriptSource);
 
-    await IsolateExecutor.run(BuildExecutable(context.safeMap),
+    await IsolateExecutor.run(
+        BuildExecutable(context.safeMap, isFlutter: isFlutter),
         packageConfigURI: sourceDirectoryUri.resolve(".packages"),
         imports: [
           "package:runtime/runtime.dart",

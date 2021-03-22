@@ -15,7 +15,7 @@ class Build {
   Map<String, Uri> get packageMap => _packageMap ??= context.resolvedPackages;
   Map<String, Uri>? _packageMap;
 
-  Future execute() async {
+  Future execute({bool? isFlutter}) async {
     final compilers = context.context.compilers;
 
     print("Resolving ASTs...");
@@ -100,7 +100,7 @@ class Build {
     });
 
     print("Fetching dependencies (--offline --no-precompile)...");
-    await getDependencies();
+    await getDependencies(isFlutter: isFlutter);
     print("Finished fetching dependencies.");
 
     if (!context.forTests) {
@@ -110,10 +110,16 @@ class Build {
     }
   }
 
-  Future getDependencies() async {
-    final cmd = Platform.isWindows ? "pub.bat" : "pub";
+  Future getDependencies({bool? isFlutter}) async {
+    var cmd = Platform.isWindows ? "pub.bat" : "pub";
+    List<String> args = [];
+    if (isFlutter ?? false) {
+      args.add(cmd);
+      cmd = "flutter";
+    }
+    args.addAll(["get", "--offline", "--no-precompile"]);
 
-    final res = await Process.run(cmd, ["get", "--offline", "--no-precompile"],
+    final res = await Process.run(cmd, args,
         workingDirectory:
             context.buildDirectoryUri.toFilePath(windows: Platform.isWindows),
         runInShell: true);
