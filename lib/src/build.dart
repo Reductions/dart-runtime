@@ -116,8 +116,10 @@ class Build {
     if (isFlutter ?? false) {
       args.add(cmd);
       cmd = "flutter";
+      args.addAll(["get", "--offline"]);
+    } else {
+      args.addAll(["get", "--offline", "--no-precompile"]);
     }
-    args.addAll(["get", "--offline", "--no-precompile"]);
 
     final res = await Process.run(cmd, args,
         workingDirectory:
