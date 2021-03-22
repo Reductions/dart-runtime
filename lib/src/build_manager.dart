@@ -7,8 +7,8 @@ import 'package:runtime/runtime.dart';
 import 'build_context.dart';
 
 class BuildExecutable extends Executable<Null> {
-  BuildExecutable(Map<String, dynamic> message, {this.isFlutter})
-      : super(message) {
+  BuildExecutable(Map<String, dynamic> message) : super(message) {
+    isFlutter = message["isFlutter"];
     context = BuildContext.fromMap(message);
   }
 
@@ -56,9 +56,10 @@ class BuildManager {
     });
 
     strippedScriptFile.writeAsStringSync(scriptSource);
+    final contextMap = context.safeMap;
+    contextMap.addAll({"isFlutter": isFlutter});
 
-    await IsolateExecutor.run(
-        BuildExecutable(context.safeMap, isFlutter: isFlutter),
+    await IsolateExecutor.run(BuildExecutable(contextMap),
         packageConfigURI: sourceDirectoryUri.resolve(".packages"),
         imports: [
           "package:runtime/runtime.dart",
