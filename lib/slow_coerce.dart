@@ -20,29 +20,29 @@ T cast<T>(dynamic input) {
       }
 
       if (typeString.startsWith("List<int>")) {
-        return input.cast<int>() as T;
+        return List<int>.from(input) as T;
       } else if (typeString.startsWith("List<num>")) {
-        return input.cast<num>() as T;
+        return List<num>.from(input) as T;
       } else if (typeString.startsWith("List<double>")) {
-        return input.cast<double>() as T;
+        return List<double>.from(input) as T;
       } else if (typeString.startsWith("List<String>")) {
-        return input.cast<String>() as T;
+        return List<String>.from(input) as T;
       } else if (typeString.startsWith("List<bool>")) {
-        return input.cast<bool>() as T;
+        return List<bool>.from(input) as T;
       } else if (typeString.startsWith("List<int?>")) {
-        return input.cast<int?>() as T;
+        return List<int?>.from(input) as T;
       } else if (typeString.startsWith("List<num?>")) {
-        return input.cast<num?>() as T;
+        return List<num?>.from(input) as T;
       } else if (typeString.startsWith("List<double?>")) {
-        return input.cast<double?>() as T;
+        return List<double?>.from(input) as T;
       } else if (typeString.startsWith("List<String?>")) {
-        return input.cast<String?>() as T;
+        return List<String?>.from(input) as T;
       } else if (typeString.startsWith("List<bool?>")) {
-        return input.cast<bool?>() as T;
+        return List<bool?>.from(input) as T;
       } else if (typeString.startsWith("List<Map<String, dynamic>>")) {
-        return input.cast<Map<String, dynamic>>() as T;
+        return List<Map<String, dynamic>>.from(input) as T;
       } else if (typeString.startsWith("List<Map<String, dynamic>?>")) {
-        return input.cast<Map<String, dynamic>?>() as T;
+        return List<Map<String, dynamic>?>.from(input) as T;
       }
     } else if (typeString.startsWith(_mapPrefix)) {
       if (input is! Map) {

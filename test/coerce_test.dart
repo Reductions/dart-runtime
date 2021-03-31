@@ -161,7 +161,7 @@ void main() {
 
       test("homogenous, wrong type", () {
         try {
-          cast<List<String>>(wash([4]));
+          final x = cast<List<String>>(wash([4]));
           fail('unreachable');
         } on TypeCoercionException catch (e) {
           expect(e.expectedType.toString(), "List<String>");

@@ -74,7 +74,7 @@ void main() {
 Future<String> dart(Uri workingDir) async {
   final result = await Process.run("dart", ["bin/main.dart"],
       workingDirectory: workingDir.toFilePath(windows: Platform.isWindows),
-      runInShell: true);
+      runInShell: true,);
   return result.stdout.toString();
 }
 

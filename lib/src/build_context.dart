@@ -175,7 +175,7 @@ class BuildContext {
 
       if (!importedUri.isAbsolute) {
         final path = fileUri!.resolve(importedUri.path);
-        return 'import "file:${absolute(path.path)}";';
+        return "import 'file:${absolute(path.path)}';";
       }
 
       return text.substring(m.start, m.end);

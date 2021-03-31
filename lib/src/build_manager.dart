@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_void_to_null
 import 'dart:io';
 
 import 'package:analyzer/dart/ast/ast.dart';
@@ -6,7 +7,7 @@ import 'package:conduit_runtime/runtime.dart';
 
 import 'build_context.dart';
 
-class BuildExecutable extends Executable<void> {
+class BuildExecutable extends Executable<Null> {
   BuildExecutable(Map<String, dynamic> message) : super(message) {
     context = BuildContext.fromMap(message);
   }
@@ -14,7 +15,7 @@ class BuildExecutable extends Executable<void> {
   late BuildContext context;
 
   @override
-  Future<void> execute() async {
+  Future<Null> execute() async {
     final build = Build(context);
     await build.execute();
   }
@@ -53,14 +54,15 @@ class BuildManager {
     }
 
     strippedScriptFile.writeAsStringSync(scriptSource);
-
-    await IsolateExecutor.run(BuildExecutable(context.safeMap),
-        packageConfigURI: sourceDirectoryUri.resolve(".packages"),
-        imports: [
-          "package:conduit_runtime/runtime.dart",
-          context.targetScriptFileUri.toString()
-        ],
-        logHandler: (s) => print(s)); //ignore: avoid_print
+    await IsolateExecutor.run(
+      BuildExecutable(context.safeMap),
+      packageConfigURI: sourceDirectoryUri.resolve(".packages"),
+      imports: [
+        "package:conduit_runtime/runtime.dart",
+        context.targetScriptFileUri.toString()
+      ],
+      logHandler: (s) => print(s), //ignore: avoid_print
+    );
   }
 
   Future clean() async {
